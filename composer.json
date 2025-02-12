@@ -1,0 +1,32 @@
+{
+  "name": "alnv/contao-personio-bundle",
+  "type": "contao-bundle",
+  "license": "proprietary",
+  "description": "",
+  "autoload": {
+    "psr-4": {
+      "Alnv\\ContaoPersonioBundle\\": "src/"
+    },
+    "classmap": [
+      "src/Resources/contao/"
+    ],
+    "exclude-from-classmap": [
+      "src/Resources/contao/config/"
+    ]
+  },
+  "require": {
+    "contao/core-bundle": "~4.13 || ~5.3",
+    "guzzlehttp/guzzle": "^7.9"
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "extra": {
+    "contao": {
+      "sources": {
+        "": "system/modules/contao-personio-bundle"
+      }
+    },
+    "contao-manager-plugin": "Alnv\\ContaoPersonioBundle\\ContaoManager\\Plugin"
+  }
+}

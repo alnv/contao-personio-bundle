@@ -1,0 +1,66 @@
+<?php $this->extend('block_searchable'); ?>
+<?php $this->block('content'); ?>
+<?php
+use Contao\Input;
+
+global $objPage;
+
+$strCurrentJob = ($_GET['auto_item'] ?? '') ? Input::get('auto_item') : '';
+?>
+<?php if (is_array($this->jobs) && !empty(is_array($this->jobs))): ?>
+
+    <?php foreach ($this->jobs as $intIndex => $arrJob): ?>
+
+        <?php if ($strCurrentJob && $arrJob['id'] != $strCurrentJob): ?>
+            <?php continue; ?>
+        <?php endif; ?>
+
+        <div class="<?php if (!$strCurrentJob): ?>ce_accordionSingle ce_accordion <?php endif; ?>ce_text block">
+
+            <?php if (!$strCurrentJob): ?>
+            <div class="toggler"><?= $arrJob['name'] ?></div>
+            <?php else: ?>
+            <p class="back"><a href="<?= $objPage->getFrontendUrl() ?>">Zurück</a></p>
+            <h1><?= $arrJob['name'] ?></h1>
+            <?php endif; ?>
+
+            <div class="content">
+                <?php if (is_array($arrJob['jobDescriptions']) && !empty($arrJob['jobDescriptions'])): ?>
+                    <?php foreach ($arrJob['jobDescriptions'] as $arrDescription): ?>
+                        <h3><?= $arrDescription['headline'] ?></h3>
+                        <?= $arrDescription['content'] ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                <?php if ($strCurrentJob == $arrJob['id']): ?>
+                <div class="ce_form block" id="form-<?= $arrJob['id'] ?>">
+                    <h3>Bewerbung</h3>
+                    <p>Bitte fülle das folgende Formular aus. Sollte es Schwierigkeiten mit dem Upload der Daten geben, bitte wir um eine E-Mail an bewerbung@mypharmacy.de<br><br></p>
+                    {{insert_form::<?= $this->form ?>}}
+                    <script>
+                        (function (){
+                            let form = document.querySelector('#form-<?= $arrJob['id'] ?>');
+                            let jobIdInput = form.querySelector('input[name="job_position_id"]');
+                            let accessTokenInput = form.querySelector('input[name="access_token"]');
+                            let companyIdInput = form.querySelector('input[name="company_id"]');
+                            if (jobIdInput) {
+                                jobIdInput.value = "<?= $arrJob['id'] ?>";
+                            }
+                            if (companyIdInput) {
+                                companyIdInput.value = "<?= $this->companyId ?>";
+                            }
+                            if (accessTokenInput){
+                                accessTokenInput.value = "<?= $this->token ?>";
+                            }
+                        })();
+                    </script>
+                </div>
+                <?php else: ?>
+                <p class="appy"><a href="<?= $objPage->getFrontendUrl('/' . $arrJob['id']) ?>">Jetzt bewerben</a></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+<?php endif; ?>
+<?php $this->endblock(); ?>
