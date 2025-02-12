@@ -33,7 +33,7 @@ class ContentPersonioReader extends ContentElement
 
         $objPersonio = new Personio();
 
-        $this->Template->action = Config::get('personioUrl') ?: '';
+        $this->Template->action = 'https://api.personio.de/recruiting/applicant';
         $this->Template->token = Config::get('personioToken') ?: '';
         $this->Template->companyId = Config::get('personioCompanyId') ?: '';
         $this->Template->jobs = $objPersonio->getJobs($this->offices);
